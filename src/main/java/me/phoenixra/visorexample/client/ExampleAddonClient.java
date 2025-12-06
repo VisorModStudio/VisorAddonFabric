@@ -4,6 +4,7 @@ import me.phoenixra.visor.api.VisorAPI;
 import me.phoenixra.visor.api.common.addon.VisorAddon;
 import me.phoenixra.visorexample.common.VisorExample;
 import me.phoenixra.visorexample.client.overlays.VROverlayExample;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +33,11 @@ public class ExampleAddonClient implements VisorAddon {
     @Override
     public @NotNull String getAddonId() {
         return VisorExample.MOD_ID;
+    }
+
+    @Override
+    public @NotNull Text getAddonName() {
+        return Text.literal(VisorExample.MOD_NAME);
     }
 
     @Override

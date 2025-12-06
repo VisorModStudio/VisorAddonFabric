@@ -1,6 +1,7 @@
 package me.phoenixra.visorexample.client.overlays;
 
-import me.phoenixra.visor.api.client.gui.overlay.framework.VROverlayScreen;
+
+import me.phoenixra.visor.api.client.gui.overlays.framework.VROverlayScreen;
 import me.phoenixra.visor.api.common.addon.VisorAddon;
 import net.minecraft.client.gui.DrawContext;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ public class VROverlayExample extends VROverlayScreen {
     }
 
     @Override
-    public void updatePose(float v) {
+    public void onUpdatePose(float v) {
 
     }
 }
