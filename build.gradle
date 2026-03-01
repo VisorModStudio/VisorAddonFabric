@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-group = 'org.vmstudio'
+group = 'your.mod'
 version = '1.0.0-SNAPSHOT'
 
 repositories {
