@@ -1,10 +1,12 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'idea'
     alias(libs.plugins.fabricLoom)
     alias(libs.plugins.shadow)
 }
 
-group = 'me.phoenixra'
+group = 'org.vmstudio'
 version = '1.0.0-SNAPSHOT'
 
 repositories {
@@ -20,6 +22,12 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven { url = "https://maven.parchmentmc.org" }
 
+    // ---- LOCAL DEPENDENCY
+    flatDir {
+        dirs rootProject.file('libs')
+    }
+    // ----
+
     mavenCentral()
     gradlePluginPortal()
 }
@@ -31,8 +39,13 @@ dependencies {
     modImplementation(libs.fabric.loader)
 
 
-    modApi(libs.visorApi)
+    // ---- LOCAL DEPENDENCY
+    //modApi name: 'Visor-0.3.0-snapshot#7-api_fabric'
+    // ----
 
+    // ---- EXTERNAL DEPENDENCY
+    modApi(libs.visorApi)
+    // ----
 
     compileOnly(libs.bundles.annotations)
     annotationProcessor(libs.bundles.annotations)

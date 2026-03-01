@@ -1,7 +1,7 @@
-package me.phoenixra.visorexample.server;
+package your.mod.example.server;
 
-import me.phoenixra.visor.api.common.addon.VisorAddon;
-import me.phoenixra.visorexample.common.VisorExample;
+import org.vmstudio.visor.api.common.addon.VisorAddon;
+import your.mod.example.common.VisorExample;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,7 @@ public class ExampleAddonServer implements VisorAddon {
 
     @Override
     public @Nullable String getAddonPackagePath() {
-        return "me.phoenixra.visorexample.server";
+        return "your.mod.example.server";
     }
 
     @Override

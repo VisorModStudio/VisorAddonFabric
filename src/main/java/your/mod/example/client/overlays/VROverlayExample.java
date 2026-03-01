@@ -1,8 +1,8 @@
-package me.phoenixra.visorexample.client.overlays;
+package your.mod.example.client.overlays;
 
 
-import me.phoenixra.visor.api.client.gui.overlays.framework.VROverlayScreen;
-import me.phoenixra.visor.api.common.addon.VisorAddon;
+import org.vmstudio.visor.api.client.gui.overlays.framework.VROverlayScreen;
+import org.vmstudio.visor.api.common.addon.VisorAddon;
 import net.minecraft.client.gui.DrawContext;
 import org.jetbrains.annotations.NotNull;
 

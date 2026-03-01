@@ -1,16 +1,17 @@
-package me.phoenixra.visorexample.client.overlays;
+package your.mod.example.client.overlays;
+
 
 import me.phoenixra.atumvr.api.misc.color.AtumColor;
-import me.phoenixra.visor.api.client.gui.overlays.RegisterVROverlayTemplate;
-import me.phoenixra.visor.api.client.gui.overlays.framework.template.VROverlayTemplateScreen;
-import me.phoenixra.visor.api.client.gui.overlays.options.OverlayOptionGroup;
-import me.phoenixra.visor.api.client.gui.overlays.options.types.OverlayOptionsMisc;
-import me.phoenixra.visor.api.client.gui.overlays.options.types.OverlayOptionsPose;
-import me.phoenixra.visor.api.client.player.pose.PoseAnchor;
-import me.phoenixra.visor.api.common.addon.VisorAddon;
+import org.vmstudio.visor.api.client.gui.overlays.RegisterVROverlayTemplate;
+import org.vmstudio.visor.api.client.gui.overlays.framework.template.VROverlayTemplateScreen;
+import org.vmstudio.visor.api.client.gui.overlays.options.OverlayOptionGroup;
+import org.vmstudio.visor.api.client.gui.overlays.options.types.OverlayOptionsMisc;
+import org.vmstudio.visor.api.client.gui.overlays.options.types.OverlayOptionsPose;
+import org.vmstudio.visor.api.client.player.pose.PoseAnchor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+import org.vmstudio.visor.api.common.addon.VisorAddon;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class VROverlayTemplateExample extends VROverlayTemplateScreen {
     @Override
     protected void onRender(DrawContext guiGraphics, int mouseX, int mouseY, float partialTicks) {
         guiGraphics.drawCenteredTextWithShadow(this.textRenderer, text,
-                width/2, height/2, AtumColor.WHITE.toInt());
+                width/2, height/2, AtumColor.WHITE.asInt());
 
     }
 

@@ -12,7 +12,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.phoenixra.visorexample.ExampleMod"
+      "your.mod.example.ExampleMod"
     ]
   },
   "depends": {
