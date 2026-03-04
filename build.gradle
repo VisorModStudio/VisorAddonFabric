@@ -63,7 +63,14 @@ shadowJar {
     archiveClassifier.set('dev')
 }
 
-
+// ---- LOCAL DEPENDENCY
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+// ----
 
 // ----- REMAP SHADOW JAR & ACCESS-WIDENER REMAPPING -----
 
@@ -93,3 +100,4 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
+
