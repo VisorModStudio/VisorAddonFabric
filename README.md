@@ -3,7 +3,7 @@ It is a Visor addon example to start from
 
 ## Start Option I: From this example
 
-1. Modify the `Mod` block of `gradle.properties`
+1. Change the values in `Mod` block of `gradle.properties`
 2. Rename the `your.mod.example` package everywhere. Don't forget to update entrypoint in
    `fabric.mod.json`
 3. Apply Minecraft version you need: `gradlew useMinecraft-1.21.1` (All available versions: `gradlew tasks --group minecraft`)
