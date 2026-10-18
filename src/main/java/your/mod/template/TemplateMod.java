@@ -1,21 +1,21 @@
-package your.mod.example;
+package your.mod.template;
 
 import org.vmstudio.visor.api.ModLoader;
 import org.vmstudio.visor.api.VisorAPI;
-import your.mod.example.client.ExampleAddonClient;
-import your.mod.example.server.ExampleAddonServer;
+import your.mod.template.client.TemplateAddonClient;
+import your.mod.template.server.TemplateAddonServer;
 import net.fabricmc.api.ModInitializer;
 
-public class ExampleMod implements ModInitializer {
+public class TemplateMod implements ModInitializer {
     @Override
     public void onInitialize() {
         if(ModLoader.get().isDedicatedServer()){
             VisorAPI.registerAddon(
-                    new ExampleAddonServer()
+                    new TemplateAddonServer()
             );
         }else{
             VisorAPI.registerAddon(
-                    new ExampleAddonClient()
+                    new TemplateAddonClient()
             );
         }
     }
