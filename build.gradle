@@ -34,6 +34,7 @@ repositories {
 }
 
 def parchmentVersion = findProperty("parchment_version")
+def visorMod = "maven.modrinth:visor:${visor_version}+mc${minecraft_version}-fabric"
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     if (!unobfuscated) {
@@ -48,12 +49,19 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-    modCompileOnly "maven.modrinth:visor:${visor_version}+mc${minecraft_version}-fabric:api"
-    modLocalRuntime "maven.modrinth:visor:${visor_version}+mc${minecraft_version}-fabric"
+    modCompileOnly "${visorMod}:api"
+    modLocalRuntime visorMod
 
     compileOnly "org.jetbrains:annotations:26.1.0"
     compileOnly "org.projectlombok:lombok:1.18.46"
     annotationProcessor "org.projectlombok:lombok:1.18.46"
+}
+
+if (!unobfuscated) {
+    def visorJar = configurations.detachedConfiguration(dependencies.create(visorMod))
+    dependencies {
+        localRuntime files({ zipTree(visorJar.singleFile).matching { include "META-INF/jars/*.jar"; exclude "META-INF/jars/fabric-*" }.files })
+    }
 }
 
 def javaVersion = java_version as int
