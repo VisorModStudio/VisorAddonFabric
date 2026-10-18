@@ -2,7 +2,7 @@ package your.mod.example.server;
 
 import org.vmstudio.visor.api.common.addon.VisorAddon;
 import your.mod.example.common.VisorExample;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +24,8 @@ public class ExampleAddonServer implements VisorAddon {
     }
 
     @Override
-    public @NotNull Text getAddonName() {
-        return Text.literal(VisorExample.MOD_NAME);
+    public @NotNull Component getAddonName() {
+        return Component.literal(VisorExample.MOD_NAME);
     }
 
     @Override

@@ -1,12 +1,17 @@
 pluginManagement {
     repositories {
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
-        mavenCentral()
         gradlePluginPortal()
+        mavenCentral()
+        maven { name = "Fabric"; url = "https://maven.fabricmc.net/" }
+        maven { name = "Architectury"; url = "https://maven.architectury.dev/" }
+        // Architectury Loom's own Forge tooling, needed even for a Fabric mod
+        maven { name = "Forge"; url = "https://maven.minecraftforge.net/" }
     }
 }
-rootProject.name = 'VisorAddonFabric'
 
+plugins {
+    // Downloads the JDK that java_version asks for when it is not installed
+    id "org.gradle.toolchains.foojay-resolver-convention" version "1.0.0"
+}
+
+rootProject.name = "VisorAddonFabric"

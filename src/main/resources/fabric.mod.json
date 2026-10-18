@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "visor_example",
-  "version": "${version}",
+  "id": "${mod_id}",
+  "version": "${mod_version}",
 
-  "name": "VisorExample",
-  "description": "The Example Addon for Visor",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
-    "PhoenixRa"
+    "${mod_authors}"
   ],
-  "license": "MIT",
+  "license": "${mod_license}",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -16,15 +16,10 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.14.14",
+    "fabricloader": "${fabric_loader_version_range}",
     "fabric-api": "*",
-    "minecraft": ["1.20", "1.20.1"],
-    "java": ">=17"
-  },
-  "breaks": {
-    "visor": "<0.2.0"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "minecraft": "${minecraft_version_range}",
+    "java": ">=${java_version}",
+    "visor": "${visor_version_range}"
   }
 }

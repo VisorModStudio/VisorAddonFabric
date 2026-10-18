@@ -1,104 +1,79 @@
 plugins {
-    id 'java'
-    id 'java-library'
-    id 'idea'
-    alias(libs.plugins.fabricLoom)
-    alias(libs.plugins.shadow)
+    id "dev.architectury.loom" version "1.17.493" apply false
 }
 
-group = 'your.mod'
-version = '1.0.0-SNAPSHOT'
+apply from: "gradle/minecraft.gradle"
+if (switchingTarget) {
+    return
+}
+
+// For Unobfuscated Minecraft from 26.1
+def unobfuscated = !minecraft_version.startsWith("1.")
+apply plugin: unobfuscated ? "dev.architectury.loom-no-remap" : "dev.architectury.loom"
+
+if (unobfuscated) {
+    // The mod* configurations of the remapping Loom, so the dependencies read the same on every version
+    ["Api", "Implementation", "CompileOnly", "RuntimeOnly", "LocalRuntime"].each { bucket ->
+        def plain = configurations.findByName(bucket.uncapitalize())
+        if (plain != null && configurations.findByName("mod${bucket}") == null) {
+            plain.extendsFrom(configurations.create("mod${bucket}") { canBeConsumed = false; canBeResolved = false })
+        }
+    }
+}
+
+group = mod_group
+version = "${mod_version}+mc${minecraft_version}-fabric"
+base.archivesName = mod_name
 
 repositories {
-    maven {
-        name = 'Fabric'
-        url = 'https://maven.fabricmc.net/'
+    maven { name = "Parchment"; url = "https://maven.parchmentmc.org" }
+    exclusiveContent {
+        forRepository { maven { name = "Modrinth"; url = "https://api.modrinth.com/maven" } }
+        filter { includeGroup "maven.modrinth" }
     }
-    maven { url 'https://jitpack.io' }
-
-    maven { url "https://maven.fabricmc.net/" }
-    maven { url "https://maven.architectury.dev/" }
-    maven { url "https://libraries.minecraft.net/" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url = "https://maven.parchmentmc.org" }
-
-    // ---- LOCAL DEPENDENCY
-    flatDir {
-        dirs rootProject.file('libs')
-    }
-    // ----
-
-    mavenCentral()
-    gradlePluginPortal()
 }
 
+def parchmentVersion = findProperty("parchment_version")
 dependencies {
-    minecraft "com.mojang:minecraft:${libs.versions.minecraftVersion.get()}"
-    mappings "net.fabricmc:yarn:${libs.versions.yarnMappings.get()}:v2"
-
-    modImplementation(libs.fabric.loader)
-    modImplementation(libs.fabric.api)
-
-
-    // ---- LOCAL DEPENDENCY
-    //modApi name: 'Visor-0.3.0-snapshot#7-api_fabric'
-    // ----
-
-    // ---- EXTERNAL DEPENDENCY
-    modApi(libs.visorApi)
-    // ----
-
-    compileOnly(libs.bundles.annotations)
-    annotationProcessor(libs.bundles.annotations)
-}
-configurations {
-    shade {
-        canBeResolved = true
-        canBeConsumed = false
-        extendsFrom implementation
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    if (!unobfuscated) {
+        mappings loom.layered {
+            officialMojangMappings()
+            if (parchmentVersion) {
+                parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchmentVersion}@zip")
+            }
+        }
     }
+
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+
+    modCompileOnly "maven.modrinth:visor:${visor_version}+mc${minecraft_version}-fabric:api"
+    modLocalRuntime "maven.modrinth:visor:${visor_version}+mc${minecraft_version}-fabric"
+
+    compileOnly "org.jetbrains:annotations:26.1.0"
+    compileOnly "org.projectlombok:lombok:1.18.46"
+    annotationProcessor "org.projectlombok:lombok:1.18.46"
 }
 
-shadowJar {
-    configurations = [ project.configurations.shade ]
-    archiveClassifier.set('dev')
-}
-
-// ---- LOCAL DEPENDENCY
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
-    }
-}
-// ----
-
-// ----- REMAP SHADOW JAR & ACCESS-WIDENER REMAPPING -----
-
-tasks.named('remapJar') {
-    dependsOn shadowJar
-    inputFile.set(shadowJar.archiveFile)
-    archiveClassifier.set('')
-}
-
-tasks.build {
-    dependsOn tasks.named('remapJar')
-}
-
-tasks.processResources {
-    inputs.property 'version', project.version
-    filesMatching("fabric.mod.json") {
-        expand(version: project.version)
-    }
-}
-
-compileJava {
-    dependsOn clean
-}
-
+def javaVersion = java_version as int
 java {
+    toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+}
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = javaVersion
 }
 
+// ---- ${...} placeholders ----------------------------------------------------------------------
+def placeholderKeys = new Properties()
+file("gradle.properties").withReader("UTF-8") { placeholderKeys.load(it) }
+def placeholders = placeholderKeys.stringPropertyNames()
+        .findAll { it ==~ /[A-Za-z_][A-Za-z0-9_]*/ }
+        .collectEntries { [(it): findProperty(it).toString()] }
+
+processResources {
+    inputs.properties(placeholders)
+    filesMatching("fabric.mod.json") { expand(placeholders) }
+}
